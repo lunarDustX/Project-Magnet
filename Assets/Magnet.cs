@@ -11,6 +11,7 @@ public enum MagnetPole
 public class Magnet : MonoBehaviour
 {
     public MagnetPole pole;
+    public int group;
 
     private SpriteRenderer sr;
 
@@ -64,6 +65,20 @@ public class Magnet : MonoBehaviour
                     {
                         mag.Move(-v);
                     }
+                    else
+                    {
+                        if (mag.group != group)
+                        {
+                            int max = Mathf.Max(mag.group, group);
+                            int min = Mathf.Min(mag.group, group);
+                            foreach (Magnet _mag in magnets)
+                            {
+                                if (_mag.group == max)
+                                    _mag.group = min;
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -72,6 +87,18 @@ public class Magnet : MonoBehaviour
     public void Move(Vector2 _dir)
     {
         transform.position += (Vector3)_dir;
+
+        //
+        foreach (Magnet mag in magnets)
+        {
+            Debug.Log(mag.name + ", hi");
+            if (mag != this && mag.group == group)
+            {
+                Debug.Log(mag.name);
+                mag.Move(_dir);
+            }
+        }
+
         CheckSurrounding(_dir);
     }
 

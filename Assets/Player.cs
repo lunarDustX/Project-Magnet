@@ -18,8 +18,10 @@ public class Player : MonoBehaviour
 
     public void Move(Vector2 _dir)
     {
-        transform.position += (Vector3)_dir;
-        GetComponent<Magnet>().CheckSurrounding(_dir);
+        GetComponent<Magnet>().Move(_dir);
+
+        //transform.position += (Vector3)_dir;
+        //GetComponent<Magnet>().CheckSurrounding(_dir);
     }
 
     public void SwitchPole()
