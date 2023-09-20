@@ -13,8 +13,10 @@ public class Magnet : MonoBehaviour
     public MagnetPole pole;
     public int group;
 
-    private SpriteRenderer sr;
+    [HideInInspector] public int moveDepth;
+    private int nextMoveDepth;
 
+    private SpriteRenderer sr;
     Magnet[] magnets;
 
     public void ChangePole(MagnetPole _pole)
@@ -43,9 +45,11 @@ public class Magnet : MonoBehaviour
     }
 
     Vector2 comingDir;
-    public void CheckSurrounding(Vector2 _comingDir)
+    public void CheckSurrounding(Vector2 _comingDir, int _moveDepth)
     {
         comingDir = _comingDir;
+        nextMoveDepth = _moveDepth;
+
         Invoke("RealCheck", 0.1f);
     }
 
@@ -63,7 +67,7 @@ public class Magnet : MonoBehaviour
                     // same
                     if (pole == mag.pole)
                     {
-                        mag.Move(-v);
+                        mag.Move(-v, nextMoveDepth);
                     }
                     else
                     {
@@ -84,22 +88,25 @@ public class Magnet : MonoBehaviour
         }
     }
 
-    public void Move(Vector2 _dir)
+    public void Move(Vector2 _dir, int _moveDepth)
     {
         transform.position += (Vector3)_dir;
+        this.moveDepth = _moveDepth;
 
         //
         foreach (Magnet mag in magnets)
         {
-            Debug.Log(mag.name + ", hi");
             if (mag != this && mag.group == group)
             {
-                Debug.Log(mag.name);
-                mag.Move(_dir);
+                //Debug.Log(mag.name);
+                if (mag.moveDepth != _moveDepth)
+                {
+                    mag.Move(_dir, _moveDepth);
+                }
             }
         }
 
-        CheckSurrounding(_dir);
+        CheckSurrounding(_dir, _moveDepth + 1);
     }
 
     void Start()

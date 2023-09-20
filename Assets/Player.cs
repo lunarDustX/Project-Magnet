@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    Magnet[] magnets;
 
     void Start()
     {
-
+        magnets = FindObjectsOfType<Magnet>();
     }
 
     void Update()
@@ -16,12 +16,12 @@ public class Player : MonoBehaviour
 
     }
 
+    // 玩家input触发的移动
     public void Move(Vector2 _dir)
     {
-        GetComponent<Magnet>().Move(_dir);
-
-        //transform.position += (Vector3)_dir;
-        //GetComponent<Magnet>().CheckSurrounding(_dir);
+        foreach (Magnet mag in magnets)
+            mag.moveDepth = 99999;
+        GetComponent<Magnet>().Move(_dir, 0);
     }
 
     public void SwitchPole()
