@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pole: 0
   group: 0
+  moveDepth: 0
 --- !u!114 &8910504453080277159
 MonoBehaviour:
   m_ObjectHideFlags: 0
